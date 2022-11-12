@@ -1,10 +1,10 @@
-### Arc bank system
+## Arc bank system
 
-## Overview
+### Overview
 
 There are 2 containers to run: `api` and `postgres`.
 
-## Development
+### Development
 
 ```shell
 # run api and postgres containers
