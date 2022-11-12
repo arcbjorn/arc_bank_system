@@ -18,3 +18,6 @@ migrate_up ::
 
 migrate_down ::
 	migrate -path internal/db/migrations --database "postgresql://root:root@localhost:5434/arc_bank?sslmode=disable" -verbose down
+
+generate_orm ::
+	sqlc generate
