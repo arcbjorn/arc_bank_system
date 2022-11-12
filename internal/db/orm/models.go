@@ -2,7 +2,7 @@
 // versions:
 //   sqlc v1.16.0
 
-package orm
+package db
 
 import (
 	"time"

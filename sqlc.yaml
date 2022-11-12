@@ -5,7 +5,7 @@ sql:
     engine: "postgresql"
     gen:
       go:
-        package: "orm"
+        package: "db"
         out: "internal/db/orm"
 
         emit_json_tags: true
