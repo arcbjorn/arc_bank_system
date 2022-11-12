@@ -1,4 +1,4 @@
-package orm_tests
+package db_tests
 
 import (
 	"context"
