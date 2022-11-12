@@ -4,7 +4,7 @@ INSERT INTO accounts (
   balance,
   currency
 ) VALUES (
-  s1, s2, s3
+  $1, $2, $3
 ) RETURNING *;
 
 -- name: GetAccount :one

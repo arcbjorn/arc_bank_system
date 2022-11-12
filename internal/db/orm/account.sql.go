@@ -3,7 +3,7 @@
 //   sqlc v1.16.0
 // source: account.sql
 
-package orm
+package db
 
 import (
 	"context"
@@ -15,12 +15,18 @@ INSERT INTO accounts (
   balance,
   currency
 ) VALUES (
-  s1, s2, s3
+  $1, $2, $3
 ) RETURNING id, owner, balance, currency, created_at
 `
 
-func (q *Queries) CreateAccount(ctx context.Context) (Account, error) {
-	row := q.db.QueryRowContext(ctx, createAccount)
+type CreateAccountParams struct {
+	Owner    string `json:"owner"`
+	Balance  int64  `json:"balance"`
+	Currency string `json:"currency"`
+}
+
+func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (Account, error) {
+	row := q.db.QueryRowContext(ctx, createAccount, arg.Owner, arg.Balance, arg.Currency)
 	var i Account
 	err := row.Scan(
 		&i.ID,
