@@ -37,44 +37,44 @@ func TestCreateAccount(t *testing.T) {
 }
 
 func TestGetAccount(t *testing.T) {
-	account1 := createRandomAccount(t)
-	account2, err := testQueries.GetAccount(context.Background(), account1.ID)
+	newAccount := createRandomAccount(t)
+	account, err := testQueries.GetAccount(context.Background(), newAccount.ID)
 
 	require.NoError(t, err)
-	require.NotEmpty(t, account2)
+	require.NotEmpty(t, account)
 
-	require.Equal(t, account1.ID, account2.ID)
-	require.Equal(t, account1.Owner, account2.Owner)
-	require.Equal(t, account1.Balance, account2.Balance)
-	require.Equal(t, account1.Currency, account2.Currency)
+	require.Equal(t, newAccount.ID, account.ID)
+	require.Equal(t, newAccount.Owner, account.Owner)
+	require.Equal(t, newAccount.Balance, account.Balance)
+	require.Equal(t, newAccount.Currency, account.Currency)
 
-	require.WithinDuration(t, account1.CreatedAt, account2.CreatedAt, time.Second)
+	require.WithinDuration(t, newAccount.CreatedAt, account.CreatedAt, time.Second)
 
-	error := testQueries.DeleteAccount(context.Background(), account1.ID)
+	error := testQueries.DeleteAccount(context.Background(), newAccount.ID)
 	require.Nil(t, error)
 }
 
 func TestUpdateAccount(t *testing.T) {
-	account1 := createRandomAccount(t)
+	newAccount := createRandomAccount(t)
 
 	arg := orm.UpdateAccountParams{
-		ID:      account1.ID,
+		ID:      newAccount.ID,
 		Balance: utils.RandomInt(0, 100),
 	}
 
-	account2, err := testQueries.UpdateAccount(context.Background(), arg)
+	account, err := testQueries.UpdateAccount(context.Background(), arg)
 
 	require.NoError(t, err)
-	require.NotEmpty(t, account2)
+	require.NotEmpty(t, account)
 
-	require.Equal(t, account1.ID, account2.ID)
-	require.Equal(t, account1.Owner, account2.Owner)
-	require.Equal(t, account1.Currency, account2.Currency)
+	require.Equal(t, newAccount.ID, account.ID)
+	require.Equal(t, newAccount.Owner, account.Owner)
+	require.Equal(t, newAccount.Currency, account.Currency)
 
-	require.WithinDuration(t, account1.CreatedAt, account2.CreatedAt, time.Second)
+	require.WithinDuration(t, newAccount.CreatedAt, account.CreatedAt, time.Second)
 
-	require.Equal(t, arg.Balance, account2.Balance)
+	require.Equal(t, arg.Balance, account.Balance)
 
-	error := testQueries.DeleteAccount(context.Background(), account1.ID)
+	error := testQueries.DeleteAccount(context.Background(), newAccount.ID)
 	require.Nil(t, error)
 }
