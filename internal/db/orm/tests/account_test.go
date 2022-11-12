@@ -5,15 +5,16 @@ import (
 	"testing"
 
 	orm "github.com/arcbjorn/arc_bank_system/internal/db/orm"
+	"github.com/arcbjorn/arc_bank_system/pkg/utils"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestCreateAccount(t *testing.T) {
 	arg := orm.CreateAccountParams{
-		Owner:    "Tom",
-		Balance:  100,
-		Currency: "USD",
+		Owner:    utils.RandomName(),
+		Balance:  utils.RandomInt(0, 100),
+		Currency: utils.RandomCurrency(),
 	}
 
 	account, err := testQueries.CreateAccount(context.Background(), arg)
