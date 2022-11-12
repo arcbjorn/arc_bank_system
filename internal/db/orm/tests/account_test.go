@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCreateAccount(t *testing.T) {
+func createRandomAccount(t *testing.T) orm.Account {
 	arg := orm.CreateAccountParams{
 		Owner:    utils.RandomName(),
 		Balance:  utils.RandomInt(0, 100),
@@ -30,4 +30,10 @@ func TestCreateAccount(t *testing.T) {
 
 	error := testQueries.DeleteAccount(context.Background(), account.ID)
 	require.Nil(t, error)
+
+	return account
+}
+
+func TestCreateAccount(t *testing.T) {
+	createRandomAccount(t)
 }
