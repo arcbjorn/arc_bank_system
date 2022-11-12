@@ -23,4 +23,4 @@ generate_orm ::
 	sqlc generate
 
 test_orm_with_coverage ::
-	go test -cover -coverpkg "github.com/arcbjorn/arc_bank_system/internal/db/orm" "github.com/arcbjorn/arc_bank_system/internal/db/orm/tests" 
+	go test  -cover -coverpkg "github.com/arcbjorn/arc_bank_system/internal/db/orm" "github.com/arcbjorn/arc_bank_system/internal/db/orm/tests"
