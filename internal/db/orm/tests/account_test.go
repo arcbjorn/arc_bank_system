@@ -2,13 +2,14 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/require"
+
 	orm "github.com/arcbjorn/arc_bank_system/internal/db/orm"
 	"github.com/arcbjorn/arc_bank_system/pkg/utils"
-
-	"github.com/stretchr/testify/require"
 )
 
 func createRandomAccount(t *testing.T) orm.Account {
@@ -32,6 +33,11 @@ func createRandomAccount(t *testing.T) orm.Account {
 	return account
 }
 
+func deleteAccountById(t *testing.T, id int64) {
+	error := testQueries.DeleteAccount(context.Background(), id)
+	require.Nil(t, error)
+}
+
 func TestCreateAccount(t *testing.T) {
 	createRandomAccount(t)
 }
@@ -50,8 +56,7 @@ func TestGetAccount(t *testing.T) {
 
 	require.WithinDuration(t, newAccount.CreatedAt, account.CreatedAt, time.Second)
 
-	error := testQueries.DeleteAccount(context.Background(), newAccount.ID)
-	require.Nil(t, error)
+	deleteAccountById(t, newAccount.ID)
 }
 
 func TestUpdateAccount(t *testing.T) {
@@ -75,6 +80,16 @@ func TestUpdateAccount(t *testing.T) {
 
 	require.Equal(t, arg.Balance, account.Balance)
 
-	error := testQueries.DeleteAccount(context.Background(), newAccount.ID)
-	require.Nil(t, error)
+	deleteAccountById(t, newAccount.ID)
+}
+
+func TestDeleteAccount(t *testing.T) {
+	newAccount := createRandomAccount(t)
+
+	deleteAccountById(t, newAccount.ID)
+
+	account, err := testQueries.GetAccount(context.Background(), newAccount.ID)
+	require.Error(t, err)
+	require.EqualError(t, err, sql.ErrNoRows.Error())
+	require.Empty(t, account)
 }
