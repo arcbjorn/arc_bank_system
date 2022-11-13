@@ -7,6 +7,9 @@ down ::
 create_db ::
 	docker exec -it arc_bank_system_postgres_1 createdb --username=root --owner=root arc_bank
 
+create_db_test ::
+	docker exec -it arc_bank_system_postgres_1 createdb --username=root --owner=root arc_bank_test
+
 drop_db ::
 	docker exec -it arc_bank_system_postgres_1 dropdb arc_bank
 
@@ -15,6 +18,9 @@ migration ::
 
 migrate_up ::
 	migrate -path internal/db/migrations --database "postgresql://root:root@localhost:5434/arc_bank?sslmode=disable" -verbose up
+
+migrate_up_test ::
+	migrate -path internal/db/migrations --database "postgresql://root:root@localhost:5434/arc_bank_test?sslmode=disable" -verbose up
 
 migrate_down ::
 	migrate -path internal/db/migrations --database "postgresql://root:root@localhost:5434/arc_bank?sslmode=disable" -verbose down
