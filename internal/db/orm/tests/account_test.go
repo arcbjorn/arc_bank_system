@@ -55,8 +55,6 @@ func TestGetAccount(t *testing.T) {
 	require.Equal(t, newAccount.Currency, account.Currency)
 
 	require.WithinDuration(t, newAccount.CreatedAt, account.CreatedAt, time.Second)
-
-	deleteAccountById(t, newAccount.ID)
 }
 
 func TestUpdateAccount(t *testing.T) {
@@ -79,8 +77,6 @@ func TestUpdateAccount(t *testing.T) {
 	require.WithinDuration(t, newAccount.CreatedAt, account.CreatedAt, time.Second)
 
 	require.Equal(t, arg.Balance, account.Balance)
-
-	deleteAccountById(t, newAccount.ID)
 }
 
 func TestDeleteAccount(t *testing.T) {
@@ -110,17 +106,5 @@ func TestListAccounts(t *testing.T) {
 
 	for _, account := range accounts {
 		require.NotEmpty(t, account)
-	}
-
-	cleanUpArg := orm.ListAccountsParams{
-		Limit:  10,
-		Offset: 0,
-	}
-
-	cleanUpAccounts, err := testQueries.ListAccounts(context.Background(), cleanUpArg)
-	require.NoError(t, err)
-
-	for _, account := range cleanUpAccounts {
-		deleteAccountById(t, account.ID)
 	}
 }
