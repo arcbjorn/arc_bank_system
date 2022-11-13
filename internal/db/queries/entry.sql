@@ -16,7 +16,7 @@ ORDER BY id
 LIMIT $1
 OFFSET $2;
 
--- name: UpdateEntry :one
+-- name: UpdateEntryAmount :one
 UPDATE entries
 SET amount = $2
 WHERE id = $1
