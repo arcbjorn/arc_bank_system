@@ -26,3 +26,6 @@ RETURNING *;
 -- name: DeleteTransfer :exec
 DELETE FROM transfers
 WHERE id = $1;
+
+-- name: DeleteTransfers :exec
+DELETE FROM transfers;

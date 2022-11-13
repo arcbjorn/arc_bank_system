@@ -48,6 +48,15 @@ func (q *Queries) DeleteTransfer(ctx context.Context, id int64) error {
 	return err
 }
 
+const deleteTransfers = `-- name: DeleteTransfers :exec
+DELETE FROM transfers
+`
+
+func (q *Queries) DeleteTransfers(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, deleteTransfers)
+	return err
+}
+
 const getTransfer = `-- name: GetTransfer :one
 SELECT id, from_account_id, to_account_id, amount, created_at FROM transfers
 WHERE id = $1 LIMIT 1
