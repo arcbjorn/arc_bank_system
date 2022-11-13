@@ -17,7 +17,10 @@ const (
 	dbSource = "postgresql://root:root@localhost:5434/arc_bank_test?sslmode=disable"
 )
 
-var testQueries *orm.Queries
+var (
+	testQueries *orm.Queries
+	testDB      *sql.DB
+)
 
 func cleanUp(testQueries *orm.Queries) {
 	err1 := testQueries.DeleteEntries(context.Background())
@@ -37,12 +40,15 @@ func cleanUp(testQueries *orm.Queries) {
 }
 
 func TestMain(m *testing.M) {
-	connection, err := sql.Open(dbDriver, dbSource)
+	var err error
+
+	testDB, err = sql.Open(dbDriver, dbSource)
+
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
 	}
 
-	testQueries = orm.New(connection)
+	testQueries = orm.New(testDB)
 
 	exitCode := m.Run()
 
