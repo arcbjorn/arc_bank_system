@@ -1,6 +1,7 @@
 package db
 
 import (
+	"context"
 	"database/sql"
 	"log"
 	"os"
@@ -13,10 +14,27 @@ import (
 
 const (
 	dbDriver = "postgres"
-	dbSource = "postgresql://root:root@localhost:5434/arc_bank?sslmode=disable"
+	dbSource = "postgresql://root:root@localhost:5434/arc_bank_test?sslmode=disable"
 )
 
 var testQueries *orm.Queries
+
+func cleanUp(testQueries *orm.Queries) {
+	err1 := testQueries.DeleteEntries(context.Background())
+	if err1 != nil {
+		log.Fatal(err1)
+	}
+
+	err2 := testQueries.DeleteTransfers(context.Background())
+	if err2 != nil {
+		log.Fatal(err2)
+	}
+
+	err3 := testQueries.DeleteAccounts(context.Background())
+	if err3 != nil {
+		log.Fatal(err3)
+	}
+}
 
 func TestMain(m *testing.M) {
 	connection, err := sql.Open(dbDriver, dbSource)
@@ -26,5 +44,9 @@ func TestMain(m *testing.M) {
 
 	testQueries = orm.New(connection)
 
-	os.Exit(m.Run())
+	exitCode := m.Run()
+
+	cleanUp(testQueries)
+
+	os.Exit(exitCode)
 }
